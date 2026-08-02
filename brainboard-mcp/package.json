@@ -1,0 +1,40 @@
+{
+  "name": "brainboard-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Brainboard — design, clone and deploy cloud infrastructure from any AI agent.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "brainboard-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "brainboard",
+    "terraform",
+    "iac",
+    "cloud"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

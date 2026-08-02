@@ -1,0 +1,2274 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Brainboard API documentation",
+    "title": "Brainboard API",
+    "contact": {
+      "email": "support@brainboard.co"
+    },
+    "version": "1.0"
+  },
+  "paths": {
+    "/architectures/templates": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "List all available architecture templates.",
+        "tags": [
+          "Architecture Template"
+        ],
+        "summary": "ListArchitectureTemplates",
+        "operationId": "ListArchitectureTemplates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Architecture"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Creates a new architecture template.",
+        "tags": [
+          "Architecture Template"
+        ],
+        "summary": "CreateArchitectureTemplate",
+        "operationId": "CreateArchitectureTemplate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloneArchitectureRequest"
+              }
+            }
+          },
+          "description": "Create architecture template body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Architecture template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Architecture"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architectures/templates/{architectureUUID}/clone": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "This endpoint clones an architecture from a template.",
+        "tags": [
+          "Architecture Template"
+        ],
+        "summary": "CloneFromTemplate",
+        "operationId": "CloneFromTemplate",
+        "parameters": [
+          {
+            "description": "Architecture Template UUID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloneArchitectureRequest"
+              }
+            }
+          },
+          "description": "Clone from template request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cloned architecture & workflow response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloneArchitectureFromTemplateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architectures/{architectureUUID}/clone": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Creates a new architecture cloned from a source architecture.",
+        "tags": [
+          "Architecture"
+        ],
+        "summary": "CloneArchitecture",
+        "operationId": "CloneArchitecture",
+        "parameters": [
+          {
+            "description": "Architecture ID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloneArchitectureRequest"
+              }
+            }
+          },
+          "description": "Clone architecture request body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cloned architecture",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Architecture"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architectures/{architectureUUID}/versions": {
+      "post": {
+        "description": "Creates a new architecture version.",
+        "tags": [
+          "Architecture"
+        ],
+        "summary": "VersionArchitecture",
+        "operationId": "VersionArchitecture",
+        "parameters": [
+          {
+            "description": "Architecture ID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/model.ArchitectureVersionInput"
+              }
+            }
+          },
+          "description": "VersionArchitecture Request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/model.ArchitectureVersionOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architectures/{architectureUUID}/workflows": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "List all architecture workflows.",
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "ListWorkflows",
+        "operationId": "ListWorkflows",
+        "parameters": [
+          {
+            "description": "Architecture ID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Workflow"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/architectures/{architectureUUID}/workflows/{workflowID}/trigger": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Triggers a pipeline for a given workflow and architecture.",
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "Trigger Pipeline",
+        "operationId": "TriggerPipeline",
+        "parameters": [
+          {
+            "description": "Workflow ID",
+            "name": "workflowID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Architecture ID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/model.Pipeline"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment Required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/environments/{environmentUUID}/architectures": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "List all architectures from a parent environment.",
+        "tags": [
+          "Architecture"
+        ],
+        "summary": "ListArchitectures",
+        "operationId": "ListArchitectures",
+        "parameters": [
+          {
+            "description": "Environment ID",
+            "name": "environmentUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Architecture"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Lists all organization projects.",
+        "tags": [
+          "Project"
+        ],
+        "summary": "ListProjects",
+        "operationId": "ListProjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Creates a new project.",
+        "tags": [
+          "Project"
+        ],
+        "summary": "CreateProject",
+        "operationId": "CreateProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createOrUpdateProjectRequest"
+              }
+            }
+          },
+          "description": "CreateProject body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectUUID}/environments": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Lists all environments from a project.",
+        "tags": [
+          "Environment"
+        ],
+        "summary": "ListEnvironments",
+        "operationId": "ListEnvironments",
+        "parameters": [
+          {
+            "description": "parent project ID",
+            "name": "projectUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Environment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/variables/import/{architectureUUID}": {
+      "post": {
+        "description": "Imports variables from terraform files into an existing architecture.",
+        "tags": [
+          "Variables"
+        ],
+        "summary": "ImportVariables",
+        "operationId": "ImportVariables",
+        "parameters": [
+          {
+            "description": "Architecture ID",
+            "name": "architectureUUID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/handler.ImportVariablesInput"
+              }
+            }
+          },
+          "description": "ImportVariables body",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "content attribute is a map containing 'variables' key with list of conflicting variable names",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/errors.ErrorContent"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "variables": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflow_templates": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Lists all available workflow templates.",
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "ListWorkflowTemplates",
+        "operationId": "ListWorkflowTemplates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workflow"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.us1.brainboard.co"
+    },
+    {
+      "url": "https://api.apac1.brainboard.co"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "Architecture": {
+        "type": "object",
+        "properties": {
+          "approved": {
+            "type": "boolean"
+          },
+          "author": {
+            "$ref": "#/components/schemas/model.User"
+          },
+          "clone_count": {
+            "type": "integer"
+          },
+          "cloud_provider": {
+            "description": "Filled during the clone process",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CloudProvider"
+              }
+            ]
+          },
+          "cloud_providers_version": {
+            "$ref": "#/components/schemas/CloudProvidersVersion"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "current_revision": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "diagram": {
+            "$ref": "#/components/schemas/model.Diagram"
+          },
+          "environment": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "import_type": {
+            "$ref": "#/components/schemas/model.ImportType"
+          },
+          "imported": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "project": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "provider_configs": {
+            "$ref": "#/components/schemas/hcl.ProviderConfigs"
+          },
+          "readme": {
+            "type": "string"
+          },
+          "snapshot_url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "synced": {
+            "type": "boolean"
+          },
+          "synced_architectures": {
+            "$ref": "#/components/schemas/JSON"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "template": {
+            "type": "boolean"
+          },
+          "terraform_config": {
+            "$ref": "#/components/schemas/hcl.TerraformConfig"
+          },
+          "terraform_provider": {
+            "description": "todo: remove after migration",
+            "type": "string"
+          },
+          "thumbnail_url": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/brainboard_co_brainboard_pkg_domain_security_visibility.Visibility"
+          }
+        }
+      },
+      "CloneArchitectureFromTemplateResponse": {
+        "type": "object",
+        "properties": {
+          "architecture": {
+            "description": "The new architecture",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Architecture"
+              }
+            ]
+          },
+          "workflow": {
+            "description": "Deprecated: Use workflows instead",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Workflow"
+              }
+            ]
+          },
+          "workflows": {
+            "description": "The new workflow if workflow_template was defined in the request, null otherwise",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Workflow"
+            }
+          }
+        }
+      },
+      "CloneArchitectureRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "architecture": {
+            "description": "Should be defined with the template UUID for CloneFromTemplate",
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "description": "Required field with the new architecture description",
+            "type": "string"
+          },
+          "environment": {
+            "description": "Should be defined with the environment UUID for CloneFromTemplate and CloneArchitecture",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "description": "Required field with the new architecture name",
+            "type": "string"
+          },
+          "project": {
+            "description": "Should be defined with the project UUID for CloneFromTemplate and CloneArchitecture",
+            "type": "string",
+            "format": "uuid"
+          },
+          "synced": {
+            "description": "Should be defined when we use CloneArchitecture",
+            "type": "boolean"
+          },
+          "variable_values": {
+            "description": "Can be defined with a map of variables to override the cloned architecture variables for CloneFromTemplate and CloneArchitecture",
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "visibility": {
+            "description": "Required field with the new architecture visibility",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/brainboard_co_brainboard_pkg_domain_security_visibility.Visibility"
+              }
+            ]
+          },
+          "workflow_template": {
+            "description": "Deprecated: Use workflow_templates instead",
+            "type": "string",
+            "format": "uuid"
+          },
+          "workflow_templates": {
+            "description": "Can be defined with the workflow template UUID for CloneFromTemplate and CloneArchitecture",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "CloudProvider": {
+        "type": "string",
+        "enum": [
+          "aws",
+          "azurerm",
+          "google",
+          "scaleway",
+          "oci",
+          "azuread",
+          "azuredevops",
+          "azurestack",
+          "kubernetes",
+          "databricks",
+          "aviatrix",
+          ""
+        ],
+        "x-enum-varnames": [
+          "AWS",
+          "Azure",
+          "GCP",
+          "Scaleway",
+          "OCI",
+          "AzureAD",
+          "AzureDevops",
+          "AzureStack",
+          "Kubernetes",
+          "Databricks",
+          "Aviatrix",
+          "Other"
+        ]
+      },
+      "CloudProvidersVersion": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "Connector": {
+        "type": "object",
+        "properties": {
+          "automatic": {
+            "type": "boolean"
+          },
+          "graphics": {
+            "$ref": "#/components/schemas/model.ConnectorGraphic"
+          },
+          "label": {
+            "$ref": "#/components/schemas/Label"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/model.ConnectorPoint"
+            }
+          }
+        }
+      },
+      "Connectors": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Connector"
+        }
+      },
+      "Environment": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "$ref": "#/components/schemas/errors.ErrorContent"
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/errors.ErrorCode"
+          }
+        }
+      },
+      "FlattenJSON": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "GraphicsTask": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer"
+          },
+          "y": {
+            "type": "integer"
+          }
+        }
+      },
+      "JSON": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "Label": {
+        "type": "object",
+        "properties": {
+          "graphics": {
+            "$ref": "#/components/schemas/LabelGraphics"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/Position"
+          },
+          "pathPercentage": {
+            "type": "number"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "LabelGraphics": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "integer"
+          },
+          "fontSize": {
+            "type": "integer"
+          }
+        }
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "terraform_reference": {
+            "type": "string"
+          }
+        }
+      },
+      "Node": {
+        "type": "object",
+        "properties": {
+          "cloudConfigs": {
+            "$ref": "#/components/schemas/model.CloudConfigs"
+          },
+          "graphics": {
+            "$ref": "#/components/schemas/model.NodeGraphic"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/model.NodeMetadata"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "NodeBlockType": {
+        "type": "string",
+        "enum": [
+          "resource",
+          "data",
+          "module"
+        ],
+        "x-enum-varnames": [
+          "NodeBlockTypeResource",
+          "NodeBlockTypeData",
+          "NodeBlockTypeModule"
+        ]
+      },
+      "NodePoint": {
+        "type": "object",
+        "properties": {
+          "anchor": {
+            "description": "anchor position on the node edges",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model.Anchor"
+              }
+            ]
+          },
+          "id": {
+            "description": "reference to an existing Node ID",
+            "type": "string"
+          }
+        }
+      },
+      "Nodes": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Node"
+        }
+      },
+      "PluginSchema": {
+        "type": "object",
+        "properties": {
+          "defaultValue": {},
+          "dependsOn": {
+            "type": "string"
+          },
+          "env": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "type": {
+            "$ref": "#/components/schemas/PluginSchemaType"
+          },
+          "value": {}
+        }
+      },
+      "PluginSchemaType": {
+        "type": "string",
+        "enum": [
+          "string",
+          "bool",
+          "select",
+          "emails",
+          "multiline",
+          "array",
+          "secret"
+        ],
+        "x-enum-varnames": [
+          "PluginSchemaTypeString",
+          "PluginSchemaTypeBool",
+          "PluginSchemaTypeSelect",
+          "PluginSchemaTypeEmails",
+          "PluginSchemaTypeMultiline",
+          "PluginSchemaTypeArray",
+          "PluginSchemaTypeSecret"
+        ]
+      },
+      "Position": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "environments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Environment"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "description": "Used to give the User role in this project in ListProjects()",
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "force_2fa": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "description": "Only used and automatically populated when listing a Team within a Project to get the Team's role inside this project. See `func (p *Project) GetWithTeams(...)`",
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Workflow": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "editor": {
+            "$ref": "#/components/schemas/model.User"
+          },
+          "notification_recipients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notify_on_failure": {
+            "type": "boolean"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowTaskConfiguration"
+            }
+          },
+          "title": {
+            "type": "string"
+          },
+          "triggers": {
+            "$ref": "#/components/schemas/FlattenJSON"
+          },
+          "type": {
+            "$ref": "#/components/schemas/WorkflowType"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "WorkflowPluginArgs": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/PluginSchema"
+        }
+      },
+      "WorkflowTaskConfiguration": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "arguments": {
+            "$ref": "#/components/schemas/WorkflowPluginArgs"
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "graphics": {
+            "$ref": "#/components/schemas/GraphicsTask"
+          },
+          "title": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "WorkflowType": {
+        "type": "string",
+        "enum": [
+          "one_action",
+          "state_action"
+        ],
+        "x-enum-varnames": [
+          "WorkflowTypeOneAction",
+          "WorkflowTypeStateAction"
+        ]
+      },
+      "brainboard_co_brainboard_pkg_domain_diagram_node_cloudconfig_model.ValueType": {
+        "type": "string",
+        "enum": [
+          "string",
+          "bool",
+          "number",
+          "list",
+          "set",
+          "map",
+          "unknown",
+          "block"
+        ],
+        "x-enum-comments": {
+          "TypeBlock": "used to identify parent blocks in cloudconfigs"
+        },
+        "x-enum-varnames": [
+          "TypeString",
+          "TypeBool",
+          "TypeNumber",
+          "TypeList",
+          "TypeSet",
+          "TypeMap",
+          "TypeUnknown",
+          "TypeBlock"
+        ]
+      },
+      "brainboard_co_brainboard_pkg_domain_security_visibility.Visibility": {
+        "type": "string",
+        "enum": [
+          "public",
+          "organization"
+        ],
+        "x-enum-varnames": [
+          "VisibilityPublic",
+          "VisibilityOrganization"
+        ]
+      },
+      "createOrUpdateProjectRequest": {
+        "type": "object",
+        "required": [
+          "environments",
+          "name",
+          "teams"
+        ],
+        "properties": {
+          "description": {
+            "description": "description of the project",
+            "type": "string"
+          },
+          "environments": {
+            "description": "new project environments",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Environment"
+            }
+          },
+          "name": {
+            "description": "name of the project",
+            "type": "string"
+          },
+          "teams": {
+            "description": "list of teams allowed to access the new project",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          }
+        }
+      },
+      "errors.ErrorCode": {
+        "type": "string",
+        "enum": [
+          "INTERNAL_ERROR",
+          "PERMISSION_DENIED",
+          "BAD_REQUEST",
+          "INVALID_BODY",
+          "INVALID_UUID",
+          "INVALID_QUERY_PARAM",
+          "FILE_UPLOAD_FAILED",
+          "FILE_UPLOAD_MAX_SIZE",
+          "NOT_FOUND",
+          "INVALID_CONTENT_TYPE",
+          "MISSING_FILE_UPLOAD"
+        ],
+        "x-enum-varnames": [
+          "ErrCodeInternal",
+          "ErrCodePermissionDenied",
+          "ErrCodeBadRequest",
+          "ErrCodeInvalidBody",
+          "ErrCodeInvalidUUID",
+          "ErrCodeInvalidQueryParam",
+          "ErrCodeFileUploadFailed",
+          "ErrCodeFileUploadMaxSize",
+          "ErrCodeNotFound",
+          "ErrCodeInvalidContentType",
+          "ErrCodeMissingFileUpload"
+        ]
+      },
+      "errors.ErrorContent": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "handler.ImportVariablesInput": {
+        "type": "object",
+        "properties": {
+          "override": {
+            "description": "set to true to override existing variables",
+            "type": "boolean"
+          }
+        }
+      },
+      "hcl.ConfigBlock": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "blocks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/hcl.ConfigBlock"
+            }
+          }
+        }
+      },
+      "hcl.ProviderConfig": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "blocks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/hcl.ConfigBlock"
+            }
+          }
+        }
+      },
+      "hcl.ProviderConfigs": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/hcl.ProviderConfig"
+          }
+        }
+      },
+      "hcl.RequiredProvider": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "version": {
+            "description": "Version is the version of the provider to use, inluding version constraint",
+            "type": "string"
+          }
+        }
+      },
+      "hcl.RequiredProviders": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/hcl.RequiredProvider"
+        }
+      },
+      "hcl.TerraformConfig": {
+        "type": "object",
+        "properties": {
+          "required_providers": {
+            "$ref": "#/components/schemas/hcl.RequiredProviders"
+          }
+        }
+      },
+      "model.Anchor": {
+        "type": "string",
+        "enum": [
+          "north",
+          "south",
+          "west",
+          "east",
+          "automatic"
+        ],
+        "x-enum-varnames": [
+          "AnchorTop",
+          "AnchorBottom",
+          "AnchorLeft",
+          "AnchorRight",
+          "AnchorAutomatic"
+        ]
+      },
+      "model.ArchitectureVersionInput": {
+        "type": "object",
+        "properties": {
+          "commitMsg": {
+            "description": "New version description",
+            "type": "string"
+          }
+        }
+      },
+      "model.ArchitectureVersionOutput": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "message": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "model.CloudConfig": {
+        "type": "object",
+        "properties": {
+          "blockId": {
+            "type": "string"
+          },
+          "blockRevision": {
+            "type": "integer"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "editMode": {
+            "$ref": "#/components/schemas/model.EditMode"
+          },
+          "inherited": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "path": {
+            "type": "string"
+          },
+          "references": {
+            "$ref": "#/components/schemas/JSON"
+          },
+          "value": {},
+          "valueType": {
+            "$ref": "#/components/schemas/brainboard_co_brainboard_pkg_domain_diagram_node_cloudconfig_model.ValueType"
+          }
+        }
+      },
+      "model.CloudConfigs": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/model.CloudConfig"
+        }
+      },
+      "model.ConnectorGraphic": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "integer"
+          },
+          "endPointShape": {
+            "$ref": "#/components/schemas/model.PointShape"
+          },
+          "shape": {
+            "$ref": "#/components/schemas/model.ConnectorShape"
+          },
+          "startPointShape": {
+            "$ref": "#/components/schemas/model.PointShape"
+          },
+          "style": {
+            "$ref": "#/components/schemas/model.ConnectorStyle"
+          },
+          "width": {
+            "type": "number"
+          }
+        }
+      },
+      "model.ConnectorPoint": {
+        "type": "object",
+        "properties": {
+          "floating": {
+            "description": "If true, the point is marked as floating",
+            "type": "boolean"
+          },
+          "node": {
+            "$ref": "#/components/schemas/NodePoint"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        }
+      },
+      "model.ConnectorShape": {
+        "type": "string",
+        "enum": [
+          "orthogonal",
+          "straight",
+          "curvy"
+        ],
+        "x-enum-varnames": [
+          "OrthogonalConnectorShape",
+          "StraightConnectorShape",
+          "CurvyConnectorShape"
+        ]
+      },
+      "model.ConnectorStyle": {
+        "type": "string",
+        "enum": [
+          "solid",
+          "dash-sm",
+          "dash-md",
+          "dash-lg"
+        ],
+        "x-enum-varnames": [
+          "SolidStyle",
+          "DashSMStyle",
+          "DashMDStyle",
+          "DashLGStyle"
+        ]
+      },
+      "model.Diagram": {
+        "type": "object",
+        "properties": {
+          "connectors": {
+            "$ref": "#/components/schemas/Connectors"
+          },
+          "nodes": {
+            "$ref": "#/components/schemas/Nodes"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "model.EditMode": {
+        "type": "integer",
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "x-enum-varnames": [
+          "AutomaticMode",
+          "TextInputMode",
+          "AdvancedMode"
+        ]
+      },
+      "model.ImportType": {
+        "type": "string",
+        "enum": [
+          "git",
+          "files",
+          "brainboard",
+          "cloud"
+        ],
+        "x-enum-varnames": [
+          "ImportTypeGit",
+          "ImportTypeFiles",
+          "ImportTypeBrainboard",
+          "ImportTypeCloud"
+        ]
+      },
+      "model.Job": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "app_url": {
+            "type": "string"
+          },
+          "approved_by": {
+            "$ref": "#/components/schemas/model.User"
+          },
+          "architecture_id": {
+            "type": "string"
+          },
+          "arguments": {
+            "$ref": "#/components/schemas/WorkflowPluginArgs"
+          },
+          "cli_arguments": {
+            "$ref": "#/components/schemas/FlattenJSON"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "graphics": {
+            "$ref": "#/components/schemas/GraphicsTask"
+          },
+          "pipeline_id": {
+            "type": "string"
+          },
+          "runner_id": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/runner.WorkflowStatus"
+          },
+          "title": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workflow_id": {
+            "type": "string"
+          }
+        }
+      },
+      "model.NodeGraphic": {
+        "type": "object",
+        "properties": {
+          "borderColor": {
+            "type": "string"
+          },
+          "borderRadius": {},
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "color": {
+            "type": "string"
+          },
+          "customIcon": {
+            "type": "string"
+          },
+          "dashes": {
+            "type": "string"
+          },
+          "height": {
+            "type": "number"
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "opacity": {
+            "type": "integer"
+          },
+          "rotation": {
+            "type": "integer"
+          },
+          "shape": {
+            "$ref": "#/components/schemas/model.NodeShape"
+          },
+          "strokeWidth": {
+            "type": "number"
+          },
+          "textColor": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "zIndex": {
+            "type": "integer"
+          }
+        }
+      },
+      "model.NodeGraphicsMetadata": {
+        "type": "object",
+        "properties": {
+          "bbFileId": {
+            "type": "string"
+          },
+          "iconOnly": {
+            "type": "boolean"
+          },
+          "isContainer": {
+            "type": "boolean"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "model.NodeIACMetadata": {
+        "type": "object",
+        "properties": {
+          "blockType": {
+            "$ref": "#/components/schemas/NodeBlockType"
+          },
+          "cloudProvider": {
+            "$ref": "#/components/schemas/CloudProvider"
+          },
+          "cloudProviderSource": {
+            "type": "string"
+          },
+          "compartment": {
+            "type": "string"
+          },
+          "customCode": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "hideFromCode": {
+            "type": "boolean"
+          },
+          "isCustom": {
+            "type": "boolean"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "moduleVersion": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "providerAlias": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "resourceName": {
+            "type": "string"
+          },
+          "resourceType": {
+            "type": "string"
+          }
+        }
+      },
+      "model.NodeMetadata": {
+        "type": "object",
+        "properties": {
+          "graphics": {
+            "$ref": "#/components/schemas/model.NodeGraphicsMetadata"
+          },
+          "iac": {
+            "$ref": "#/components/schemas/model.NodeIACMetadata"
+          }
+        }
+      },
+      "model.NodeShape": {
+        "type": "string",
+        "enum": [
+          "line",
+          "arrow",
+          "rectangle",
+          "diamond",
+          "ellipse",
+          "hexagon",
+          "pentagon",
+          "triangle"
+        ],
+        "x-enum-varnames": [
+          "NodeShapeLine",
+          "NodeShapeArrow",
+          "NodeShapeRectangle",
+          "NodeShapeDiamond",
+          "NodeShapeEllipse",
+          "NodeShapeHexagon",
+          "NodeShapePentagon",
+          "NodeShapeTriangle"
+        ]
+      },
+      "model.Pipeline": {
+        "type": "object",
+        "properties": {
+          "architecture_id": {
+            "type": "string"
+          },
+          "author": {
+            "$ref": "#/components/schemas/model.User"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "finish_time": {
+            "type": "string"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/model.Job"
+            }
+          },
+          "notification_recipients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notify_on_failure": {
+            "type": "boolean"
+          },
+          "start_reason": {
+            "$ref": "#/components/schemas/runner.WorkflowTrigger"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/runner.WorkflowStatus"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/Workflow"
+          },
+          "workflow_id": {
+            "type": "string"
+          }
+        }
+      },
+      "model.PointShape": {
+        "type": "string",
+        "enum": [
+          "none",
+          "arrow-outlined",
+          "arrow-filled"
+        ],
+        "x-enum-varnames": [
+          "PointShapeNone",
+          "PointShapeArrowOutlined",
+          "PointShapeArrowFilled"
+        ]
+      },
+      "model.User": {
+        "type": "object",
+        "properties": {
+          "accept_news": {
+            "type": "boolean"
+          },
+          "avatar_url": {
+            "description": "was ImageURL",
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "email": {
+            "type": "string"
+          },
+          "email_confirmed": {
+            "type": "boolean"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "organization_role": {
+            "type": "string"
+          },
+          "role": {
+            "description": "Only used and automatically populated when listing team's members get the User's role inside this team. See `func (t *Team) Get(...)`",
+            "type": "string"
+          },
+          "terraform_modules_pinned": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "runner.WorkflowStatus": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "manual",
+          "pending",
+          "running",
+          "succeeded",
+          "failed",
+          "error",
+          "warning",
+          "terminated"
+        ],
+        "x-enum-varnames": [
+          "WorkflowStatusScheduled",
+          "WorkflowStatusManual",
+          "WorkflowStatusPending",
+          "WorkflowStatusRunning",
+          "WorkflowStatusSucceeded",
+          "WorkflowStatusFailed",
+          "WorkflowStatusError",
+          "WorkflowStatusWarning",
+          "WorkflowStatusTerminated"
+        ]
+      },
+      "runner.WorkflowTrigger": {
+        "type": "string",
+        "enum": [
+          "cron",
+          "manual",
+          "one-action",
+          "state-action"
+        ],
+        "x-enum-varnames": [
+          "WorkflowCron",
+          "WorkflowManual",
+          "WorkflowOneAction",
+          "WorkflowStateAction"
+        ]
+      }
+    }
+  }
+}
