@@ -2,6 +2,9 @@
 node_modules/
 dist/
 
+# Local npm pack output — the registry is the source of truth for releases
+*.tgz
+
 # Secrets — never commit. .env.example is the tracked template.
 .env
 .env.*
