@@ -3,12 +3,24 @@
   "version": "0.1.0",
   "description": "MCP server for Brainboard — design, clone and deploy cloud infrastructure from any AI agent.",
   "license": "MIT",
+  "author": "Smit Panchal",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smitp1402/Brainboard.git",
+    "directory": "brainboard-mcp"
+  },
+  "homepage": "https://github.com/smitp1402/Brainboard/tree/main/brainboard-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/smitp1402/Brainboard/issues"
+  },
   "bin": {
     "brainboard-mcp": "dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=18"
@@ -19,7 +31,8 @@
     "start": "node dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "keywords": [
     "mcp",

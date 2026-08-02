@@ -55,7 +55,10 @@ Brainboard's OpenAPI spec declares `apiKey` auth in the `Authorization` header b
 whether a `Bearer ` prefix is expected, and the API page in their docs is currently an empty stub.
 Rather than guess, this server defaults to `auto`: it sends the raw key, and on a `401`/`403`
 retries once with `Bearer <key>`, then remembers whichever form worked for the rest of the process.
-Pin `BRAINBOARD_AUTH_SCHEME` once you know, to skip the probe.
+
+**Verified against `api.us1` on 2026-08-02: both forms are accepted.** `auto` therefore resolves to
+the raw key on the first request, with no retry cost. The fallback stays in place in case the
+behaviour differs by region or changes later.
 
 ## Tools
 
@@ -79,16 +82,36 @@ Pin `BRAINBOARD_AUTH_SCHEME` once you know, to skip the probe.
 `brainboard_trigger_pipeline` carries a `destructiveHint`, so well-behaved clients will ask before
 running it. Depending on the workflow it may run `terraform apply` against live cloud accounts.
 
+## Verification status
+
+Exercised end-to-end through the MCP server against the live API on 2026-08-02 (`api.us1`):
+
+| Behaviour | Result |
+| --- | --- |
+| Auth — raw key and `Bearer` | both accepted, `200` |
+| `list_projects`, `list_environments`, `list_architectures` | bare JSON arrays, matching the spec |
+| `list_templates` | `200`, 122 templates |
+| `list_workflows`, `list_workflow_templates` | `200` |
+| `clone_from_template` into a real environment | `200`, architecture created and visible in the UI |
+| Invalid UUID input | rejected by Zod before the request, clean error message |
+| `trigger_pipeline` | **not exercised** — it can apply real infrastructure |
+| `import_variables` | **failing**, see below |
+
 ### Known gaps
 
-These are limits of the public API, not of this server:
+Limits of the public API, not of this server:
 
 - **No node-level diagram editing.** You can clone and configure architectures, not place
   individual resources. Design happens from templates.
 - **No raw Terraform fetch.** The generated code is not exposed through the API.
-- **`import_variables` is under-specified.** The spec declares `multipart/form-data` and documents
-  only the `override` flag — the file part's field name is not published. The tool sends `file` by
-  default and exposes `file_field` so you can correct it without editing code.
+- **`import_variables` returns `INVALID_BODY` for every documented request shape.** Probing
+  narrowed it down but did not solve it: a JSON body returns `FILE_UPLOAD_MAX_SIZE`, which proves
+  the server does attempt a multipart parse, so the spec's declared content type is right. Yet all
+  20 multipart combinations tried — seven file-field names, four content formats, and the
+  `override` / `import_type` flags — return `INVALID_BODY`, never the spec's distinct
+  `MISSING_FILE_UPLOAD`. Something required is unpublished. The tool ships with `file_field` and
+  `extra_fields` escape hatches so it will work once Brainboard clarifies, without a code change.
+  Until then, set variables through `variable_values` on the clone tools, which does work.
 
 ## Development
 
