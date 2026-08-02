@@ -3,7 +3,7 @@ import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
 import type { BrainboardClient } from "../client.js";
 import { runTool } from "../result.js";
-import { uuid } from "../schemas.js";
+import { projectRole, uuid } from "../schemas.js";
 
 export const registerProjectTools = (server: McpServer, client: BrainboardClient): void => {
   server.registerTool(
@@ -39,8 +39,9 @@ export const registerProjectTools = (server: McpServer, client: BrainboardClient
     {
       title: "Create project",
       description:
-        "Create a new project. Both environments and teams are required by the API — " +
-        "pass at least one environment name, and team UUIDs from an existing project if unsure.",
+        "Create a new project. Both environments and teams are required by the API — pass at " +
+        "least one environment name, and a team UUID from brainboard_list_projects if unsure. " +
+        "Each team needs a project role: 'admin' or 'guest'.",
       inputSchema: z.object({
         name: z.string().min(1).describe("Project name."),
         description: z.string().optional().describe("Project description."),
@@ -54,8 +55,18 @@ export const registerProjectTools = (server: McpServer, client: BrainboardClient
           .min(1)
           .describe("Environments to create alongside the project."),
         teams: z
-          .array(z.object({ uuid: uuid.describe("Existing team UUID.") }))
-          .describe("Teams granted access to the project."),
+          .array(
+            z.object({
+              uuid: uuid.describe("Existing team UUID, from brainboard_list_projects."),
+              // Undocumented in the spec: `role` is required, and the accepted
+              // values are narrower than the org-level roles. Verified against
+              // api.us1 — 'owner', 'member' and 'viewer' are all rejected with
+              // "project role is invalid".
+              role: projectRole.describe("Team's role on this project: 'admin' or 'guest'."),
+            }),
+          )
+          .min(1)
+          .describe("Teams granted access to the project, each with a project role."),
       }),
       annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
     },

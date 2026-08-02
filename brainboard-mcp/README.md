@@ -89,16 +89,38 @@ running it. Depending on the workflow it may run `terraform apply` against live 
 
 Exercised end-to-end through the MCP server against the live API on 2026-08-02 (`api.us1`):
 
-| Behaviour | Result |
+| Tool | Result |
 | --- | --- |
-| Auth — raw key and `Bearer` | both accepted, `200` |
-| `list_projects`, `list_environments`, `list_architectures` | bare JSON arrays, matching the spec |
-| `list_templates` | `200`, 122 templates |
-| `list_workflows`, `list_workflow_templates` | `200` |
-| `clone_from_template` into a real environment | `200`, architecture created and visible in the UI |
-| Invalid UUID input | rejected by Zod before the request, clean error message |
-| `trigger_pipeline` | **not exercised** — it can apply real infrastructure |
-| `import_variables` | **failing**, see below |
+| `check_connection` | ✅ |
+| `list_projects` | ✅ bare JSON array, matching the spec |
+| `create_project` | ✅ `201` — see the undocumented `role` requirement below |
+| `list_environments` | ✅ |
+| `list_architectures` | ✅ |
+| `list_templates` | ✅ 122 templates |
+| `create_template` | ✅ |
+| `clone_from_template` | ✅ architecture created and visible in the UI |
+| `clone_architecture` | ✅ including `variable_values` overrides |
+| `version_architecture` | ✅ |
+| `list_workflows` | ✅ |
+| `list_workflow_templates` | ✅ |
+| `trigger_pipeline` | ⚠️ **not exercised** — it can apply real infrastructure |
+| `import_variables` | ❌ **failing**, see below |
+
+Auth was checked separately: both the raw key and `Bearer <key>` return `200`. Invalid UUIDs and
+invalid enum values are rejected by Zod before any request is made.
+
+### Spec gaps found while testing
+
+Two things the published spec gets wrong. Both are handled in this server, but they will bite
+anyone else working from `BrainboardAPI.json`:
+
+- **`POST /projects` requires a `role` on every team.** `createOrUpdateProjectRequest` marks
+  `teams` as required but says nothing about `role`, and the `Team` schema describes `role` as a
+  read-only field only populated when listing. Omitting it fails with
+  `project role is invalid`. The accepted values are also narrower than the organization roles
+  documented elsewhere: **`admin` and `guest` work; `owner`, `member`, `viewer`, `editor`,
+  `reader`, `contributor` and `maintainer` are all rejected.**
+- **`POST /variables/import/{uuid}` cannot be called successfully at all** — see below.
 
 ### Known gaps
 

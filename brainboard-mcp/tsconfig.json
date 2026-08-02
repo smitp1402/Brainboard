@@ -15,5 +15,8 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  // Tests are run from source by vitest; they must not reach dist/ or the
+  // published tarball.
+  "exclude": ["src/**/*.test.ts"]
 }
