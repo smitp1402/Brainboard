@@ -109,9 +109,11 @@ Limits of the public API, not of this server:
   the server does attempt a multipart parse, so the spec's declared content type is right. Yet all
   20 multipart combinations tried — seven file-field names, four content formats, and the
   `override` / `import_type` flags — return `INVALID_BODY`, never the spec's distinct
-  `MISSING_FILE_UPLOAD`. Something required is unpublished. The tool ships with `file_field` and
-  `extra_fields` escape hatches so it will work once Brainboard clarifies, without a code change.
-  Until then, set variables through `variable_values` on the clone tools, which does work.
+  `MISSING_FILE_UPLOAD`. Something required is unpublished. Full evidence, the attempt matrix, and
+  curl reproductions are in [docs/BUG-import-variables.md](docs/BUG-import-variables.md). The tool
+  ships with `file_field` and `extra_fields` escape hatches so it will work once Brainboard
+  clarifies, without a code change. Until then, set variables through `variable_values` on the
+  clone tools, which does work.
 
 ## Development
 
