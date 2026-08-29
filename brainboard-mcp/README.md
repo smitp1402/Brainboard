@@ -16,9 +16,10 @@ you had built them by hand.
 ## Install
 
 ```bash
-npm install
-npm run build
+npm install -g brainboard-mcp
 ```
+
+Or run it without installing, via `npx brainboard-mcp`.
 
 ## Configure
 
@@ -36,8 +37,8 @@ Add to your MCP client:
 {
   "mcpServers": {
     "brainboard": {
-      "command": "node",
-      "args": ["/absolute/path/to/brainboard-mcp/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "brainboard-mcp"],
       "env": { "BRAINBOARD_API_KEY": "<your-key>" }
     }
   }
@@ -47,8 +48,28 @@ Add to your MCP client:
 Claude Code, in one line:
 
 ```bash
-claude mcp add brainboard --env BRAINBOARD_API_KEY=<your-key> -- node /absolute/path/to/brainboard-mcp/dist/index.js
+claude mcp add brainboard npx brainboard-mcp --env BRAINBOARD_API_KEY=<your-key>
 ```
+
+### Windows
+
+npm installs a `.cmd` shim rather than a real executable, and some MCP clients cannot spawn it —
+the server shows as "not connected" with no error. Point the client at Node and the installed
+entrypoint instead:
+
+```bash
+npm install -g brainboard-mcp
+npm root -g          # prints e.g. C:\nvm4w\nodejs\node_modules
+```
+
+Then point the client at that path:
+
+```bash
+claude mcp add brainboard node "C:\nvm4w\nodejs\node_modules\brainboard-mcp\dist\index.js" --env BRAINBOARD_API_KEY=<your-key>
+```
+
+PowerShell also swallows a bare `--` separator, so pass the command as a positional argument as
+shown above rather than after `--`.
 
 Then ask the agent to run `brainboard_check_connection` to confirm the key and region.
 

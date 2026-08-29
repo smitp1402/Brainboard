@@ -1,6 +1,6 @@
 {
   "name": "brainboard-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for Brainboard — design, clone and deploy cloud infrastructure from any AI agent.",
   "license": "MIT",
   "author": "Smit Panchal",
