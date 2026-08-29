@@ -2,8 +2,8 @@
 
 An [MCP](https://modelcontextprotocol.io) server for the [Brainboard](https://www.brainboard.co/) public API.
 
-> **Unofficial.** A community project, not affiliated with, endorsed by, or maintained by
-> Brainboard. Built against their public API and OpenAPI spec. "Brainboard" is their trademark.
+> **Unofficial.** Built and maintained by the community, not by Brainboard. Written against
+> their public API and OpenAPI spec. "Brainboard" is their trademark.
 
 It lets any MCP-capable agent — Claude Code, Claude Desktop, Cursor — drive Brainboard directly:
 browse projects, clone an architecture template into an environment with variable overrides, and
