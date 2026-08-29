@@ -18,3 +18,7 @@ STUDY_GUIDE.md
 npm-debug.log*
 .DS_Store
 Thumbs.db
+
+# Personal notes — kept locally, not published
+QA_LOG.md
+brainboard-mcp/docs/TYPESCRIPT-NOTES.md
