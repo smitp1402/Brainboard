@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { BrainboardApiError, BrainboardClient } from "./client.js";
 import { loadConfig } from "./config.js";
 
-const config = (env: NodeJS.ProcessEnv = {}) =>
+const config = (env: Record<string, string | undefined> = {}) =>
   loadConfig({ BRAINBOARD_API_KEY: "key-123", ...env });
 
 /**
