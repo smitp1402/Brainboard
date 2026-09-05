@@ -17,7 +17,7 @@ const main = async (): Promise<void> => {
 
   const server = new McpServer({
     name: "brainboard-mcp",
-    version: "0.1.1",
+    version: "0.2.0",
   });
 
   registerAllTools(server, client);
