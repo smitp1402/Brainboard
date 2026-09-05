@@ -22,3 +22,17 @@ Thumbs.db
 # Personal notes — kept locally, not published
 QA_LOG.md
 brainboard-mcp/docs/TYPESCRIPT-NOTES.md
+
+# Outreach drafts — personal, not published
+contact/
+
+# Demo/presenter materials — not published
+PRESENTER_SCRIPT.md
+ARCHITECTURE_EXPLAINED.md
+ARCHITECTURE_DIAGRAMS.html
+founder_demo.html
+API_SPEC_VALIDATION_REPORT.md
+
+# Claude Code tooling — local only
+.claude/
+.mcp.json
