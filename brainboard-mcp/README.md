@@ -2,6 +2,10 @@
 
 An [MCP](https://modelcontextprotocol.io) server for the [Brainboard](https://www.brainboard.co/) public API.
 
+[![npm](https://img.shields.io/npm/v/brainboard-mcp)](https://www.npmjs.com/package/brainboard-mcp)
+[![node](https://img.shields.io/node/v/brainboard-mcp)](https://www.npmjs.com/package/brainboard-mcp)
+[![license](https://img.shields.io/npm/l/brainboard-mcp)](LICENSE)
+
 > **Unofficial.** Built and maintained by the community, not by Brainboard. Written against
 > their public API and OpenAPI spec. "Brainboard" is their trademark.
 
@@ -19,7 +23,8 @@ you had built them by hand.
 npm install -g brainboard-mcp
 ```
 
-Or run it without installing, via `npx brainboard-mcp`.
+Or run it without installing, via `npx brainboard-mcp`. Published as
+**[`brainboard-mcp`](https://www.npmjs.com/package/brainboard-mcp)** on npm.
 
 ## Configure
 
