@@ -151,31 +151,21 @@ There is no automated release step; publishing is manual.
 ## Known limitations
 
 - **`import_variables` does not work.** `POST /variables/import/{uuid}` returns `INVALID_BODY` for
-  every documented request shape. Twenty combinations were tried — seven file-field names, four
-  content formats, the `override` and `import_type` flags — all identical failures, and never the
-  spec's distinct `MISSING_FILE_UPLOAD`. Something required is unpublished. The tool ships anyway,
-  with `file_field` and `extra_fields` escape hatches, so it works the moment Brainboard clarifies.
-  Use `variable_values` on the clone tools instead, which does work.
+  every documented request shape — twenty combinations tried, never the spec's distinct
+  `MISSING_FILE_UPLOAD`. Something required is unpublished. The tool ships with `file_field` and
+  `extra_fields` escape hatches so it works the moment Brainboard clarifies; until then use
+  `variable_values` on the clone tools, which does.
   [Full evidence](brainboard-mcp/docs/BUG-import-variables.md).
 - **`trigger_pipeline` has never been run end-to-end.** It can `terraform apply` against real cloud
   accounts, so it was left untested on purpose. It carries `destructiveHint: true` and is built from
   the spec and the surrounding verified endpoints — but "built correctly" is not "verified", and it
   is listed as unverified rather than quietly counted as passing.
-- **Responses are not validated.** Input is strictly checked by Zod; output is parsed as JSON and
-  handed to the model untyped. If Brainboard changes a response shape, this server will pass the
-  change straight through.
-- **No pagination handling.** `/projects`, `/architectures/templates` and `/workflow_templates`
-  currently return bare arrays and are consumed whole. If Brainboard introduces pagination, results
-  will silently truncate.
-- **The tool layer has no unit tests** — see the Tests section above for why, and why that is still
-  a gap rather than a decision I'd defend indefinitely.
-- **No linter.** Formatting and style are consistent by hand, not enforced. `tsc --strict` is the
-  only automated gate on code quality.
-- **Regions are hard-coded** to `us1` and `apac1`. A new Brainboard region needs a code change,
-  though `BRAINBOARD_BASE_URL` overrides the host as a workaround.
-- **Ceiling set by the API, not by this server:** there is no node-level diagram editing (you clone
-  and configure architectures, you do not place individual resources) and no way to fetch the
-  generated Terraform back out. Both are limits of Brainboard's public API.
+- **Responses are trusted, not validated.** Input is strictly checked by Zod; output is parsed as
+  JSON and handed to the model untyped. The list endpoints are consumed whole, so if Brainboard
+  changes a response shape or adds pagination, this server passes it straight through.
+- **Ceiling set by the API, not by this server:** no node-level diagram editing (you clone and
+  configure architectures, you do not place individual resources) and no way to fetch the generated
+  Terraform back out.
 
 ## License
 
