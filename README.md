@@ -82,42 +82,6 @@ flowchart TB
 The red edge is the only path to irreversible effect. Everything above it is metadata; below it,
 `terraform apply` runs against live cloud accounts.
 
-## Design decisions worth explaining
-
-**The auth retry is gated on 401/403 — and that gate is the point.** Brainboard's spec declares
-`apiKey` auth in the `Authorization` header but never says whether a `Bearer ` prefix is expected,
-and their API docs page is an empty stub. Rather than guess or push the choice onto the user, the
-client sends the raw key, retries once with `Bearer` on 401/403, then pins whichever worked for the
-rest of the process. The non-obvious part is what it *won't* retry: a 404, a 500, or a timeout
-throws immediately. A blanket retry would be reasonable for the GETs and actively dangerous for
-`POST /architectures/{uuid}/clone` — the endpoint is not idempotent, so a retried "failure" that
-actually succeeded server-side would create a second architecture. Auth failures are the only class
-where the server is guaranteed not to have acted.
-([`client.ts:64`](brainboard-mcp/src/client.ts#L64))
-
-**Errors are returned as tool results, not thrown.** Every tool body runs through `runTool`, which
-catches everything and returns `{ isError: true, content: [text] }`. Throwing would surface a
-protocol-level failure the model cannot reason about or recover from; returning the failure as text
-keeps it inside the conversation, where the model can act on it. So the text is written for that
-reader: a 401 doesn't just say 401, it says *"check that `BRAINBOARD_REGION` matches the region your
-organization is hosted in"* — which is the actual cause most of the time, because a valid key
-against the wrong regional host returns 401, not 404.
-([`result.ts:25`](brainboard-mcp/src/result.ts#L25))
-
-**The Zod schemas encode findings, not the spec.** `projectRole` is `z.enum(["admin", "guest"])`.
-The spec documents `Team.role` as a *response-only* field and never lists valid values; Brainboard's
-own docs describe four organization roles. Nine values were probed against the live API and exactly
-two were accepted. Hard-coding the empirical answer means the model gets a schema error locally
-instead of burning a round trip to be told `project role is invalid`. Validation at the boundary
-here is a latency and correctness decision, not a formality.
-([`schemas.ts:18`](brainboard-mcp/src/schemas.ts#L18))
-
-**No caching, deliberately.** The server holds no state between calls beyond the resolved auth
-scheme — no cached project list, no UUID map. Brainboard is the system of record and humans and
-other agents mutate it concurrently; a cached UUID that has since been deleted fails at the worst
-possible moment, inside a multi-step plan the model has already committed to. Re-reading is cheap;
-acting on a stale identifier is not.
-
 ## Stack
 
 | | |
@@ -130,31 +94,6 @@ acting on a stale identifier is not.
 | CI | GitHub Actions, Node 20 + 22 matrix |
 | Distribution | npm, [`brainboard-mcp`](https://www.npmjs.com/package/brainboard-mcp) |
 | Dependencies | 2 runtime, 3 dev |
-
-## Repo layout
-
-```
-LICENSE                     MIT
-README.md                   this file
-.github/
-  workflows/ci.yml          typecheck · test · build · entrypoint smoke test
-  dependabot.yml            grouped weekly updates
-brainboard-mcp/             the published package
-  README.md                 setup, full tool reference, per-tool verification status
-  CHANGELOG.md
-  src/
-    index.ts                bootstrap, stdio transport, exit-1-on-misconfiguration
-    config.ts               env parsing and validation, returns a frozen Config
-    client.ts               HTTP, auth resolution, timeouts, error mapping
-    result.ts               API calls → MCP tool results
-    schemas.ts              shared Zod pieces mirrored from the OpenAPI spec
-    tools/                  one module per resource group, 14 tools total
-    *.test.ts               16 tests
-  docs/
-    BrainboardAPI.json      Brainboard's published OpenAPI spec — the source of truth
-    API-FINDINGS.md         two spec defects found while building, with reproductions
-    BUG-import-variables.md the one endpoint that cannot be called, in full
-```
 
 ## Local setup
 
