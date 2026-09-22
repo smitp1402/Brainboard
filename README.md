@@ -16,7 +16,31 @@ diagram, and real generated Terraform.
 [server README + tool reference](brainboard-mcp/README.md) ·
 [API findings](brainboard-mcp/docs/API-FINDINGS.md)
 
-There is nothing to deploy: this is a stdio server launched by the MCP client as a child process.
+## Install
+
+Published to npm as **[`brainboard-mcp`](https://www.npmjs.com/package/brainboard-mcp)**. There is
+nothing to deploy — it is a stdio server that your MCP client launches as a child process.
+
+```bash
+claude mcp add brainboard npx brainboard-mcp --env BRAINBOARD_API_KEY=<your-key>
+```
+
+Or wire it up by hand, in any MCP client:
+
+```jsonc
+{
+  "mcpServers": {
+    "brainboard": {
+      "command": "npx",
+      "args": ["-y", "brainboard-mcp"],
+      "env": { "BRAINBOARD_API_KEY": "<your-key>" }
+    }
+  }
+}
+```
+
+Then ask the agent to run `brainboard_check_connection`. Full configuration, the 14-tool reference,
+and a Windows `.cmd`-shim workaround are in **[brainboard-mcp/README.md](brainboard-mcp/README.md)**.
 
 ## Architecture
 
@@ -145,16 +169,15 @@ npm run typecheck && npm test && npm run build
 and build run offline. You only need a key to talk to the live API — and Brainboard's free tier
 issues one from organization settings, so there is no paid dependency at any point in this project.
 
-To run it against a real account, copy `brainboard-mcp/.env.example` for the variable reference and
-point your MCP client at the built entrypoint:
+To point a client at your working copy rather than the published package, use the built entrypoint
+directly — `brainboard-mcp/.env.example` documents every variable:
 
 ```bash
 claude mcp add brainboard node "$PWD/dist/index.js" --env BRAINBOARD_API_KEY=<your-key>
 ```
 
-Then ask the agent to run `brainboard_check_connection` — it reports the resolved base URL and which
-`Authorization` form your account accepted. Windows has a `.cmd`-shim gotcha with `npx`;
-[the server README](brainboard-mcp/README.md#windows) has the workaround.
+`brainboard_check_connection` then reports the resolved base URL and which `Authorization` form your
+account accepted.
 
 ## Tests
 
