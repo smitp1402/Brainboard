@@ -3,7 +3,7 @@
 Notes from building [brainboard-mcp](../README.md), an unofficial MCP server for the Brainboard
 public API, entirely from the published OpenAPI spec.
 
-**Tested:** 2026-08-02 · **Host:** `https://api.us1.brainboard.co` · **Spec:** `BrainboardAPI.json`
+**Tested:** 2026-08-02 · **Host:** `https://api.us1.brainboard.co` · **Spec:** [`BrainboardAPI.json`](BrainboardAPI.json)
 (OpenAPI 3.0, Brainboard API v1.0) · **Account:** free tier, API key from organization settings
 
 Every one of the 13 endpoints in the spec was wrapped as a tool and called against a live account.

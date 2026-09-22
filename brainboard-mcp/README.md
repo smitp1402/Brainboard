@@ -133,8 +133,8 @@ invalid enum values are rejected by Zod before any request is made.
 ### Spec gaps found while testing
 
 Two things the published spec gets wrong. Both are handled in this server, but they will bite
-anyone else working from `BrainboardAPI.json`. Written up in full — with reproductions, attempt
-matrices and suggested fixes — in **[docs/API-FINDINGS.md](docs/API-FINDINGS.md)**:
+anyone else working from [`docs/BrainboardAPI.json`](docs/BrainboardAPI.json). Written up in
+full — with reproductions, attempt matrices and suggested fixes — in **[docs/API-FINDINGS.md](docs/API-FINDINGS.md)**:
 
 - **`POST /projects` requires a `role` on every team.** `createOrUpdateProjectRequest` marks
   `teams` as required but says nothing about `role`, and the `Team` schema describes `role` as a
@@ -185,7 +185,8 @@ src/
   tools/          one module per resource group
 ```
 
-Generated against `BrainboardAPI.json` (OpenAPI 3.0), using `@modelcontextprotocol/server` v2.
+Generated against [`docs/BrainboardAPI.json`](docs/BrainboardAPI.json) (OpenAPI 3.0), using
+`@modelcontextprotocol/server` v2.
 
 ## License
 

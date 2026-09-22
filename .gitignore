@@ -9,6 +9,7 @@ dist/
 .env
 .env.*
 !.env.example
+.npmrc
 
 # Local notes
 STUDY_GUIDE.md
@@ -32,6 +33,17 @@ ARCHITECTURE_EXPLAINED.md
 ARCHITECTURE_DIAGRAMS.html
 founder_demo.html
 API_SPEC_VALIDATION_REPORT.md
+DEMO_COMMANDS.md
+DEMO_COMMANDS_CHECKLIST.md
+BRAINBOARD_MCP_REPORT.md
+
+# Exported pitch/report documents — the Markdown sources are the originals
+*.pdf
+*.docx
+
+# Credentials kept locally by mistake. These are recovery codes, not config:
+# they belong in a password manager, not in a git working tree.
+npm_recovery_codes*.txt
 
 # Claude Code tooling — local only
 .claude/

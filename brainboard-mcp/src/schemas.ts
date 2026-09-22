@@ -1,4 +1,4 @@
-/** Shared Zod pieces mirrored from BrainboardAPI.json (OpenAPI 3.0). */
+/** Shared Zod pieces mirrored from docs/BrainboardAPI.json (OpenAPI 3.0). */
 import { z } from "zod";
 
 export const uuid = z.string().uuid();

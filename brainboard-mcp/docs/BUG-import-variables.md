@@ -1,7 +1,7 @@
 # Bug report: `POST /variables/import/{architectureUUID}` rejects every documented request shape
 
 **Status:** open · **Filed:** 2026-08-02 · **Endpoint:** `POST /variables/import/{architectureUUID}`
-**Host:** `https://api.us1.brainboard.co` · **Spec:** `BrainboardAPI.json` (OpenAPI 3.0, Brainboard API v1.0)
+**Host:** `https://api.us1.brainboard.co` · **Spec:** [`BrainboardAPI.json`](BrainboardAPI.json) (OpenAPI 3.0, Brainboard API v1.0)
 
 ## Summary
 

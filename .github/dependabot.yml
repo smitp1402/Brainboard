@@ -1,0 +1,54 @@
+# Grouped weekly updates. Grouping matters here: the package has three dev
+# dependencies that move together (TypeScript and vitest both pull @types/node),
+# so ungrouped updates would open three PRs that each need the same CI run.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /brainboard-mcp
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # Runtime deps ship to npm users, so they get their own PR to review.
+      production:
+        applies-to: version-updates
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      # Toolchain churn is noise; one PR a week is enough.
+      dev-tooling:
+        applies-to: version-updates
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      # Majors are reviewed individually, but security fixes are batched so they
+      # land fast rather than queueing behind each other.
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    labels:
+      - dependencies
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns:
+          - "*"
