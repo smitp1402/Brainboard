@@ -21,11 +21,7 @@ diagram, and real generated Terraform.
 Published to npm as **[`brainboard-mcp`](https://www.npmjs.com/package/brainboard-mcp)**. There is
 nothing to deploy — it is a stdio server that your MCP client launches as a child process.
 
-```bash
-claude mcp add brainboard npx brainboard-mcp --env BRAINBOARD_API_KEY=<your-key>
-```
-
-Or wire it up by hand, in any MCP client:
+Add it to any MCP client's server config:
 
 ```jsonc
 {
@@ -39,6 +35,12 @@ Or wire it up by hand, in any MCP client:
 }
 ```
 
+Clients that take a CLI shortcut instead — Claude Code, for example:
+
+```bash
+claude mcp add brainboard npx brainboard-mcp --env BRAINBOARD_API_KEY=<your-key>
+```
+
 Then ask the agent to run `brainboard_check_connection`. Full configuration, the 14-tool reference,
 and a Windows `.cmd`-shim workaround are in **[brainboard-mcp/README.md](brainboard-mcp/README.md)**.
 
@@ -46,8 +48,8 @@ and a Windows `.cmd`-shim workaround are in **[brainboard-mcp/README.md](brainbo
 
 ```mermaid
 flowchart TB
-    subgraph host["MCP client — the agent host"]
-        LLM["Claude Code · Claude Desktop · Cursor"]
+    subgraph host["Any MCP-capable client"]
+        AGENT["AI agent<br/>Claude Code · Claude Desktop · Cursor · Zed · Continue · your own"]
     end
 
     subgraph server["brainboard-mcp — this repo"]
@@ -55,7 +57,7 @@ flowchart TB
         IDX["index.ts<br/>stdio transport; stdout is JSON-RPC only,<br/>all logging goes to stderr"]
         CFG["config.ts<br/>env read once, frozen, validated<br/>no API key ⇒ exit 1 at startup"]
         TOOLS["tools/ — 14 tools over 13 endpoints<br/>Zod rejects bad UUIDs and enums<br/><b>before</b> any request is sent"]
-        RES["result.ts<br/>every throw becomes readable text"]
+        RES["result.ts<br/>every throw becomes text the agent can act on"]
         CLI["client.ts<br/>auth probe · timeout · error mapping"]
     end
 
@@ -65,17 +67,17 @@ flowchart TB
         CLOUD["AWS · Azure · GCP"]
     end
 
-    LLM -- "JSON-RPC over stdio" --> IDX
+    AGENT -- "JSON-RPC over stdio" --> IDX
     CFG --> IDX
     IDX --> TOOLS
     TOOLS --> CLI
     CLI -- "HTTPS, Authorization header" --> API
     CLI -- "non-2xx" --> RES
-    RES -- "isError result, never an exception" --> LLM
+    RES -- "isError result, never an exception" --> AGENT
     API --> TF
     TF -- "only via trigger_pipeline" --> CLOUD
 
-    linkStyle 7 stroke:#c0392b,stroke-width:3px
+    linkStyle 8 stroke:#c0392b,stroke-width:3px
     style CLOUD stroke:#c0392b,stroke-width:2px
 ```
 
@@ -111,8 +113,8 @@ issues one from organization settings, so there is no paid dependency at any poi
 To point a client at your working copy rather than the published package, use the built entrypoint
 directly — `brainboard-mcp/.env.example` documents every variable:
 
-```bash
-claude mcp add brainboard node "$PWD/dist/index.js" --env BRAINBOARD_API_KEY=<your-key>
+```jsonc
+{ "command": "node", "args": ["<repo>/brainboard-mcp/dist/index.js"] }
 ```
 
 `brainboard_check_connection` then reports the resolved base URL and which `Authorization` form your
